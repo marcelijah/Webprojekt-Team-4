@@ -1,4 +1,5 @@
 // Basis-URL für API-Anfragen
+
 const BASE_URL = 'logic/';
 
 function apiCall(endpoint, data, callback, method = 'POST') {
