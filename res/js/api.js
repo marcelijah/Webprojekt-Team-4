@@ -1,6 +1,5 @@
-// Basis-URL für API-Anfragen
-
-const BASE_URL = 'logic/';
+/* Zentrale AJAX-Hilfsdatei für die JSON-Kommunikation mit dem Backend. */
+const BASE_URL = window.API_BASE_URL || 'logic/';
 
 function apiCall(endpoint, data, callback, method = 'POST') {
     $.ajax({
@@ -10,7 +9,7 @@ function apiCall(endpoint, data, callback, method = 'POST') {
         data: JSON.stringify(data),
         dataType: 'json',
         success: function (response) {
-            // Daten empfangen – Rückruf aufrufen
+            // Rückruf aufrufen
             callback(response.success, response.data, response.message);
         },
         error: function (xhr, status, error) {
