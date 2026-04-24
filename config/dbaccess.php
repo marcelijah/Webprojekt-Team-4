@@ -1,4 +1,5 @@
-<?phpclass DBAccess {
+<?php 
+class DBAccess {
 
     // Datenbankverbindungsparameter
     private const DB_HOST    = 'localhost';
@@ -45,8 +46,6 @@
 
     public function getConnection(): PDO {
         return $this->connection;
-    }
-
     }
 
     private function __clone() {}
