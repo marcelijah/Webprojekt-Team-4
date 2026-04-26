@@ -1,0 +1,125 @@
+/* ===== Allgemein ===== */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+/* ===== Navbar ===== */
+.navbar-brand {
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Hero-Banner ===== */
+.hero-banner {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+/* ===== Kategorien (Homepage) ===== */
+.category-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    color: #212529;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    border-color: #0f3460;
+}
+
+.category-icon {
+    font-size: 2.5rem;
+    color: #0f3460;
+    display: block;
+}
+
+/* ===== Serien-Navigation ===== */
+.serien-btn {
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+/* ===== Modell-Filter ===== */
+.filter-btn {
+    border-radius: 20px;
+    font-size: 0.82rem;
+    transition: all 0.2s ease;
+}
+
+/* ===== Produktkarten ===== */
+.product-card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+.product-card img {
+    border-radius: 10px 10px 0 0;
+    object-fit: contain;
+    height: 220px;
+    width: 100%;
+    padding: 12px;
+    background-color: #f8f9fa;
+}
+
+.product-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card .card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.product-card .price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f3460;
+}
+
+.product-card .btn-cart {
+    background-color: #0f3460;
+    border-color: #0f3460;
+    color: #fff;
+    margin-top: auto;
+}
+
+.product-card .btn-cart:hover {
+    background-color: #16213e;
+    border-color: #16213e;
+}
+
+/* ===== Footer ===== */
+.footer {
+    background-color: #1a1a2e !important;
+}
+
+.footer-link {
+    color: #adb5bd;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: #fff;
+}
