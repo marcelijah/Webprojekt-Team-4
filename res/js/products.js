@@ -1,5 +1,9 @@
 // Geladene Produkte der aktuellen Serie – für client-seitigen Modell-Filter
 let allProdukte = [];
+// Aktueller Suchbegriff (B14: Continuous Search Filter)
+let aktiveSuche = '';
+// Timeout-ID für Debounce der Live-Suche
+let sucheTimeout = null;
 
 $(document).ready(function () {
     const params = new URLSearchParams(window.location.search);
@@ -20,6 +24,15 @@ $(document).ready(function () {
         seiteTitel(aktiveSerie);
         history.pushState(null, '', '?serie=' + encodeURIComponent(aktiveSerie));
         ladeProdukte(aktiveSerie);
+    });
+
+    // B14: Live-Suche via AJAX bei jeder Eingabe (mit kleinem Debounce)
+    $('#suchfeld').on('input', function () {
+        aktiveSuche = $(this).val().trim();
+        clearTimeout(sucheTimeout);
+        sucheTimeout = setTimeout(function () {
+            ladeProdukte(aktiveSerie);
+        }, 200);
     });
 
     // Browser-Zurück-Button unterstützen
@@ -53,7 +66,7 @@ function ladeProdukte(serie) {
         '<p>Produkte werden geladen...</p></div>'
     );
 
-    apiCall('get_products.php', { kategorie: serie }, function (success, data, message) {
+    apiCall('get_products.php', { kategorie: serie, suche: aktiveSuche }, function (success, data, message) {
         if (!success) {
             $('#produkte-container').html(
                 '<div class="col-12"><div class="alert alert-danger">' + message + '</div></div>'

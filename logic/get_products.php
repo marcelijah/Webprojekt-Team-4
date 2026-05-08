@@ -5,25 +5,31 @@ require_once __DIR__ . '/response.php';
 try {
     $input = json_decode(file_get_contents('php://input'), true) ?? [];
     $kategorie = trim($input['kategorie'] ?? '');
+    $suche = trim($input['suche'] ?? '');
 
     $pdo = DBAccess::getInstance()->getConnection();
 
+    // Dynamische WHERE-Bedingungen je nach übergebenen Filtern
+    $bedingungen = [];
+    $parameter = [];
+
     if ($kategorie !== '') {
-        // Kategorie-Filter: Treffersuche auf den Seriennamen (z.B. "iPhone 15")
-        $stmt = $pdo->prepare(
-            'SELECT id, name, description, price, category, image_path, stock
-             FROM products
-             WHERE category LIKE ?
-             ORDER BY category, name'
-        );
-        $stmt->execute(['%' . $kategorie . '%']);
-    } else {
-        $stmt = $pdo->query(
-            'SELECT id, name, description, price, category, image_path, stock
-             FROM products
-             ORDER BY category, name'
-        );
+        $bedingungen[] = 'category LIKE ?';
+        $parameter[] = '%' . $kategorie . '%';
     }
+    if ($suche !== '') {
+        $bedingungen[] = 'name LIKE ?';
+        $parameter[] = '%' . $suche . '%';
+    }
+
+    $sql = 'SELECT id, name, description, price, category, image_path, stock FROM products';
+    if (!empty($bedingungen)) {
+        $sql .= ' WHERE ' . implode(' AND ', $bedingungen);
+    }
+    $sql .= ' ORDER BY category, name';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($parameter);
 
     $products = $stmt->fetchAll();
     Response::success($products);
