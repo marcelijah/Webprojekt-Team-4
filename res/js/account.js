@@ -1,5 +1,11 @@
-// B20: Mein Konto – Stammdaten anzeigen und ändern
+// B20/B21: Mein Konto – Stammdaten + Bestellhistorie
 $(document).ready(function () {
+    // Bestell-Bestätigung anzeigen, wenn nach Checkout hierher geleitet
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('bestellt')) {
+        $('#bestell-erfolg').removeClass('d-none');
+    }
+
     // Login prüfen
     apiCall('session_status.php', {}, function (success, data) {
         if (!success || !data || !data.loggedIn) {
@@ -9,15 +15,30 @@ $(document).ready(function () {
             );
             return;
         }
+        rendereTabs();
         ladeStammdaten();
+        ladeBestellungen();
     });
 });
+
+function rendereTabs() {
+    const html =
+        '<ul class="nav nav-tabs mb-3" role="tablist">' +
+        '  <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-daten" type="button">Stammdaten</button></li>' +
+        '  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-bestellungen" type="button">Bestellungen</button></li>' +
+        '</ul>' +
+        '<div class="tab-content">' +
+        '  <div class="tab-pane fade show active" id="tab-daten"><div id="stammdaten-bereich"></div></div>' +
+        '  <div class="tab-pane fade" id="tab-bestellungen"><div id="bestellungen-bereich"></div></div>' +
+        '</div>';
+    $('#account-container').html(html);
+}
 
 // ---------- B20: Stammdaten ----------
 function ladeStammdaten() {
     apiCall('account_get.php', {}, function (success, data, message) {
         if (!success) {
-            $('#account-container').html('<div class="alert alert-danger">' + message + '</div>');
+            $('#stammdaten-bereich').html('<div class="alert alert-danger">' + message + '</div>');
             return;
         }
         rendereStammdatenFormular(data);
@@ -25,7 +46,6 @@ function ladeStammdaten() {
 }
 
 function rendereStammdatenFormular(u) {
-    // Benutzername editierbar, Vor-/Nachname schreibgeschützt
     const html =
         '<form id="stammdaten-form" class="card card-body">' +
         '<div class="row g-3">' +
@@ -48,7 +68,7 @@ function rendereStammdatenFormular(u) {
         '<button type="submit" class="btn btn-dark"><i class="bi bi-save me-1"></i>Speichern</button>' +
         '</form>';
 
-    $('#account-container').html(html);
+    $('#stammdaten-bereich').html(html);
 
     $('#stammdaten-form').on('submit', function (e) {
         e.preventDefault();
@@ -90,6 +110,57 @@ function speichern() {
         $('#stammdaten-erfolg').removeClass('d-none').text(message);
         $f.find('[name="passwort"]').val('');
     });
+}
+
+// ---------- B21: Bestellhistorie ----------
+function ladeBestellungen() {
+    apiCall('orders_list.php', {}, function (success, data, message) {
+        if (!success) {
+            $('#bestellungen-bereich').html('<div class="alert alert-danger">' + message + '</div>');
+            return;
+        }
+        rendereBestellungen(data);
+    });
+}
+
+function rendereBestellungen(bestellungen) {
+    if (!bestellungen || bestellungen.length === 0) {
+        $('#bestellungen-bereich').html(
+            '<div class="text-center text-secondary py-4"><p>Du hast noch keine Bestellungen.</p></div>'
+        );
+        return;
+    }
+
+    let html = '<div class="table-responsive"><table class="table align-middle">';
+    html += '<thead><tr>';
+    html += '<th>Bestell-Nr.</th><th>Datum</th><th>Artikel</th><th class="text-end">Gesamt</th>';
+    html += '<th>Zahlungsart</th><th>Status</th>';
+    html += '</tr></thead><tbody>';
+
+    bestellungen.forEach(function (b) {
+        const total = parseFloat(b.total).toFixed(2).replace('.', ',');
+        const datum = formatDatum(b.created_at);
+        html += '<tr>';
+        html += '<td>#' + b.id + '</td>';
+        html += '<td>' + datum + '</td>';
+        html += '<td>' + b.anzahl_artikel + '</td>';
+        html += '<td class="text-end">' + total + ' €</td>';
+        html += '<td>' + escapeHtml(b.payment_method) + '</td>';
+        html += '<td><span class="badge bg-secondary">' + escapeHtml(b.status) + '</span></td>';
+        html += '</tr>';
+    });
+
+    html += '</tbody></table></div>';
+    $('#bestellungen-bereich').html(html);
+}
+
+function formatDatum(s) {
+    // Erwartetes Format: "YYYY-MM-DD HH:MM:SS"
+    if (!s) return '';
+    const t = s.split(' ');
+    if (t.length < 2) return s;
+    const d = t[0].split('-');
+    return d[2] + '.' + d[1] + '.' + d[0] + ' ' + t[1].substring(0, 5);
 }
 
 function escapeHtml(s) {
