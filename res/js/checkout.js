@@ -46,8 +46,15 @@ function rendereCheckout(data) {
     html += '<ul class="list-group list-group-flush mb-3">';
     data.positionen.forEach(function (p) {
         const zwischen = p.zwischensumme.toFixed(2).replace('.', ',');
-        html += '<li class="list-group-item d-flex justify-content-between">';
-        html += '<span>' + escapeHtml(p.name) + ' <span class="text-muted">× ' + p.menge + '</span></span>';
+        const img = p.image_path || 'productpictures/placeholder.jpg';
+        html += '<li class="list-group-item d-flex justify-content-between align-items-center">';
+        html += '<span class="d-flex align-items-center gap-2">';
+        html += '  <img src="../../' + escapeHtml(img) + '" alt=""';
+        html += '       class="rounded border bg-white p-1"';
+        html += '       style="width:48px;height:48px;object-fit:contain;"';
+        html += '       onerror="this.src=\'../../productpictures/placeholder.jpg\'">';
+        html += '  <span>' + escapeHtml(p.name) + ' <span class="text-muted">× ' + p.menge + '</span></span>';
+        html += '</span>';
         html += '<span>' + zwischen + ' €</span>';
         html += '</li>';
     });

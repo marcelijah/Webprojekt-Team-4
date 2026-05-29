@@ -7,10 +7,11 @@ function initAuthNav() {
         if ($authItem.length === 0) return;
 
         if (data.loggedIn) {
-            // "Mein Konto"-Link vor dem Warenkorb-Eintrag einfügen
-            const $cartItem = $('a[href$="cart.html"]').parent();
+            // WICHTIG: nur in der Navbar suchen – sonst wird "Mein Konto" auch in
+            // Listen eingefügt, die ebenfalls einen cart.html-Link enthalten.
+            const $cartItem = $('.navbar a[href$="cart.html"]').closest('.nav-item');
             if ($cartItem.length && $('#meinkonto-link').length === 0) {
-                const accountHref = $('a[href="res/sites/cart.html"]').length
+                const accountHref = $('.navbar a[href="res/sites/cart.html"]').length
                     ? 'res/sites/account.html'
                     : 'account.html';
                 $cartItem.before(
@@ -20,13 +21,27 @@ function initAuthNav() {
                 );
             }
 
+            // Begrüßung als eigenes nav-item davor einfügen –
+            // dadurch gleiche vertikale Höhe wie die anderen nav-links
+            if ($('#greeting-item').length === 0) {
+                $authItem.before(
+                    '<li class="nav-item" id="greeting-item">' +
+                    '<span class="nav-link disabled text-light">' +
+                    'Hallo, ' + escapeHtml(data.username) +
+                    '</span></li>'
+                );
+            }
+
             $authItem.html(
-                '<span class="navbar-text text-light me-2">' +
-                'Hallo, ' + escapeHtml(data.username) +
-                '</span>' +
-                '<a href="#" class="nav-link d-inline" id="logout-link">' +
+                '<a href="#" class="nav-link" id="logout-link">' +
                 '<i class="bi bi-box-arrow-right me-1"></i>Logout</a>'
             );
+
+            // Footer-Link "Anmelden" durch "Mein Konto" ersetzen, wenn eingeloggt
+            $('.footer-link[href$="login.html"]').each(function () {
+                const accountHref = $(this).attr('href').replace('login.html', 'account.html');
+                $(this).attr('href', accountHref).text('Mein Konto');
+            });
             $('#logout-link').on('click', function (e) {
                 e.preventDefault();
                 apiCall('logout.php', {}, function () {

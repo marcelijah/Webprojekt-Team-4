@@ -46,6 +46,7 @@ function ladeStammdaten() {
 }
 
 function rendereStammdatenFormular(u) {
+    // Username read-only anzeigen (Spec: sensible Infos nicht voll editierbar)
     const html =
         '<form id="stammdaten-form" class="card card-body">' +
         '<div class="row g-3">' +
@@ -134,7 +135,7 @@ function rendereBestellungen(bestellungen) {
     let html = '<div class="table-responsive"><table class="table align-middle">';
     html += '<thead><tr>';
     html += '<th>Bestell-Nr.</th><th>Datum</th><th>Artikel</th><th class="text-end">Gesamt</th>';
-    html += '<th>Zahlungsart</th><th>Status</th>';
+    html += '<th>Zahlungsart</th><th>Status</th><th></th>';
     html += '</tr></thead><tbody>';
 
     bestellungen.forEach(function (b) {
@@ -147,6 +148,9 @@ function rendereBestellungen(bestellungen) {
         html += '<td class="text-end">' + total + ' €</td>';
         html += '<td>' + escapeHtml(b.payment_method) + '</td>';
         html += '<td><span class="badge bg-secondary">' + escapeHtml(b.status) + '</span></td>';
+        html += '<td class="text-end">' +
+                '<a class="btn btn-sm btn-outline-dark" target="_blank" href="../../logic/invoice.php?id=' + b.id + '">' +
+                '<i class="bi bi-receipt me-1"></i>Rechnung</a></td>';
         html += '</tr>';
     });
 

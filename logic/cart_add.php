@@ -15,7 +15,7 @@ try {
 
     // Produkt aus DB laden (Preis nie vom Client übernehmen)
     $pdo = DBAccess::getInstance()->getConnection();
-    $stmt = $pdo->prepare('SELECT id, name, price FROM products WHERE id = ? LIMIT 1');
+    $stmt = $pdo->prepare('SELECT id, name, price, image_path FROM products WHERE id = ? LIMIT 1');
     $stmt->execute([$produktId]);
     $produkt = $stmt->fetch();
 
@@ -36,6 +36,7 @@ try {
             'produkt_id' => $id,
             'name'       => $produkt['name'],
             'preis'      => (float)$produkt['price'],
+            'image_path' => $produkt['image_path'],
             'menge'      => 1,
         ];
     }

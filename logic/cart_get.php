@@ -17,6 +17,7 @@ if (!empty($_SESSION['warenkorb']) && is_array($_SESSION['warenkorb'])) {
             'produkt_id'    => (int)$eintrag['produkt_id'],
             'name'          => $eintrag['name'],
             'preis'         => $preis,
+            'image_path'    => $eintrag['image_path'] ?? 'productpictures/placeholder.jpg',
             'menge'         => $menge,
             'zwischensumme' => $zwischensumme,
         ];

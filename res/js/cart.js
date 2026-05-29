@@ -74,8 +74,17 @@ function rendere(data) {
     data.positionen.forEach(function (p) {
         const preis = p.preis.toFixed(2).replace('.', ',');
         const zwischen = p.zwischensumme.toFixed(2).replace('.', ',');
+        const img = p.image_path || 'productpictures/placeholder.jpg';
         html += '<tr>';
-        html += '<td>' + escapeHtml(p.name) + '</td>';
+        html += '<td>';
+        html += '  <div class="d-flex align-items-center gap-3">';
+        html += '    <img src="../../' + escapeHtml(img) + '" alt="' + escapeHtml(p.name) + '"';
+        html += '         class="rounded border bg-white p-1"';
+        html += '         style="width:72px;height:72px;object-fit:contain;"';
+        html += '         onerror="this.src=\'../../productpictures/placeholder.jpg\'">';
+        html += '    <span>' + escapeHtml(p.name) + '</span>';
+        html += '  </div>';
+        html += '</td>';
         html += '<td class="text-end">' + preis + ' €</td>';
         html += '<td class="text-center">';
         html += '  <button class="btn btn-sm btn-outline-dark btn-menge-minus" data-id="' + p.produkt_id + '">−</button>';
