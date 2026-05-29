@@ -1,4 +1,4 @@
-// Aktualisiert die Navigation je nach Login-Status (B11, B12)
+// Aktualisiert die Navigation je nach Login-Status (B11, B12, B20)
 function initAuthNav() {
     apiCall('session_status.php', {}, function (success, data) {
         if (!success || !data) return;
@@ -7,9 +7,22 @@ function initAuthNav() {
         if ($authItem.length === 0) return;
 
         if (data.loggedIn) {
+            // "Mein Konto"-Link vor dem Warenkorb-Eintrag einfügen
+            const $cartItem = $('a[href$="cart.html"]').parent();
+            if ($cartItem.length && $('#meinkonto-link').length === 0) {
+                const accountHref = $('a[href="res/sites/cart.html"]').length
+                    ? 'res/sites/account.html'
+                    : 'account.html';
+                $cartItem.before(
+                    '<li class="nav-item">' +
+                    '<a class="nav-link" id="meinkonto-link" href="' + accountHref + '">' +
+                    '<i class="bi bi-person-circle me-1"></i>Mein Konto</a></li>'
+                );
+            }
+
             $authItem.html(
                 '<span class="navbar-text text-light me-2">' +
-                '<i class="bi bi-person-circle me-1"></i>Hallo, ' + escapeHtml(data.username) +
+                'Hallo, ' + escapeHtml(data.username) +
                 '</span>' +
                 '<a href="#" class="nav-link d-inline" id="logout-link">' +
                 '<i class="bi bi-box-arrow-right me-1"></i>Logout</a>'
