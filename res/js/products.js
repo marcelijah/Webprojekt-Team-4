@@ -12,9 +12,6 @@ $(document).ready(function () {
     seiteTitel(aktiveSerie);
     aktiveSerieMarkieren(aktiveSerie);
 
-    const anzahl = JSON.parse(localStorage.getItem('warenkorb') || '[]').length;
-    $('#cart-count').text(anzahl);
-
     ladeProdukte(aktiveSerie);
 
     // Serien-Navigation: Kategoriewechsel per AJAX
@@ -140,8 +137,7 @@ function produktKarte(produkt) {
                         <span class="text-muted ms-1">(4.5)</span>
                     </div>
                     <p class="price mb-3">${preis} €</p>
-                    <button class="btn btn-cart btn-sm w-100"
-                            onclick="zumWarenkorb(${produkt.id}, '${produkt.name.replace(/'/g, "\\'")}', ${produkt.price})">
+                    <button class="btn btn-cart btn-sm w-100" onclick="zumWarenkorb(${produkt.id})">
                         <i class="bi bi-cart-plus me-1"></i>In den Warenkorb
                     </button>
                 </div>
@@ -149,10 +145,29 @@ function produktKarte(produkt) {
         </div>`;
 }
 
-function zumWarenkorb(id, name, preis) {
-    const warenkorb = JSON.parse(localStorage.getItem('warenkorb') || '[]');
-    warenkorb.push({ id, name, preis });
-    localStorage.setItem('warenkorb', JSON.stringify(warenkorb));
-    $('#cart-count').text(warenkorb.length);
-    alert(name + ' wurde zum Warenkorb hinzugefügt.');
+// B15: Produkt via AJAX zum Warenkorb hinzufügen (ohne Reload)
+function zumWarenkorb(id) {
+    apiCall('cart_add.php', { produkt_id: id }, function (success, data, message) {
+        if (!success) {
+            zeigeHinweis(message || 'Fehler beim Hinzufügen.', 'danger');
+            return;
+        }
+        // Badge sofort aktualisieren – Backend liefert neue Gesamtanzahl
+        $('#cart-count').text(data.anzahl);
+        zeigeHinweis(data.name + ' wurde zum Warenkorb hinzugefügt.', 'success');
+    });
+}
+
+// Kleine, nicht-blockierende Hinweis-Toast oben rechts
+function zeigeHinweis(text, typ) {
+    if ($('#hinweis-container').length === 0) {
+        $('body').append(
+            '<div id="hinweis-container" class="position-fixed top-0 end-0 p-3" style="z-index:1080;"></div>'
+        );
+    }
+    const $toast = $(
+        '<div class="alert alert-' + typ + ' shadow-sm mb-2 py-2 px-3">' + text + '</div>'
+    );
+    $('#hinweis-container').append($toast);
+    setTimeout(function () { $toast.fadeOut(300, function () { $(this).remove(); }); }, 2000);
 }
