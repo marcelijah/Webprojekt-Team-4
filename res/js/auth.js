@@ -8,7 +8,7 @@ function initAuthNav() {
 
         if (data.loggedIn) {
             // WICHTIG: nur in der Navbar suchen – sonst wird "Mein Konto" auch in
-            // Listen eingefügt, die ebenfalls einen cart.html-Link enthalten.
+            // Breadcrumb-Listen eingefügt, die ebenfalls einen cart.html-Link enthalten.
             const $cartItem = $('.navbar a[href$="cart.html"]').closest('.nav-item');
             if ($cartItem.length && $('#meinkonto-link').length === 0) {
                 const accountHref = $('.navbar a[href="res/sites/cart.html"]').length
@@ -21,13 +21,30 @@ function initAuthNav() {
                 );
             }
 
+            // B23: Admin sieht zusätzliche Menüpunkte für die Verwaltung
+            if (data.isAdmin) {
+                const istRoot = $('.navbar a[href="res/sites/cart.html"]').length > 0;
+                const basis = istRoot ? 'res/sites/' : '';
+                const $cartItem2 = $('.navbar a[href$="cart.html"]').closest('.nav-item');
+                if ($cartItem2.length && $('#admin-produkte-link').length === 0) {
+                    $cartItem2.before(
+                        '<li class="nav-item">' +
+                        '<a class="nav-link" id="admin-produkte-link" href="' + basis + 'admin_products.html">' +
+                        '<i class="bi bi-box-seam me-1"></i>Produkte bearbeiten</a></li>' +
+                        '<li class="nav-item">' +
+                        '<a class="nav-link" id="admin-kunden-link" href="' + basis + 'admin_customers.html">' +
+                        '<i class="bi bi-people me-1"></i>Kunden bearbeiten</a></li>'
+                    );
+                }
+            }
+
             // Begrüßung als eigenes nav-item davor einfügen –
             // dadurch gleiche vertikale Höhe wie die anderen nav-links
             if ($('#greeting-item').length === 0) {
                 $authItem.before(
-                    '<li class="nav-item" id="greeting-item">' +
-                    '<span class="nav-link disabled text-light">' +
-                    'Hallo, ' + escapeHtml(data.username) +
+                    '<li class="nav-item d-flex align-items-center me-lg-2 my-1 my-lg-0" id="greeting-item">' +
+                    '<span class="greeting-badge">' +
+                    '<i class="bi bi-person-circle me-1"></i>Hallo, ' + escapeHtml(data.username) +
                     '</span></li>'
                 );
             }
