@@ -9,19 +9,24 @@ try {
     // Falls keine Session aktiv, aber Remember-Cookie vorhanden -> Auto-Login
     if (empty($_SESSION['user_id']) && !empty($_COOKIE['remember_token'])) {
         $pdo = DBAccess::getInstance()->getConnection();
-        $stmt = $pdo->prepare('SELECT id, username FROM users WHERE remember_token = ? LIMIT 1');
+        $stmt = $pdo->prepare('SELECT id, username, is_admin FROM users WHERE remember_token = ? AND is_active = 1 LIMIT 1');
         $stmt->execute([$_COOKIE['remember_token']]);
         $user = $stmt->fetch();
         if ($user) {
             $_SESSION['user_id']  = (int)$user['id'];
             $_SESSION['username'] = $user['username'];
+            $_SESSION['is_admin'] = (int)$user['is_admin'];
         }
     }
 
     if (!empty($_SESSION['user_id'])) {
-        Response::success(['loggedIn' => true, 'username' => $_SESSION['username']]);
+        Response::success([
+            'loggedIn' => true,
+            'username' => $_SESSION['username'],
+            'isAdmin'  => !empty($_SESSION['is_admin']),
+        ]);
     } else {
-        Response::success(['loggedIn' => false, 'username' => null]);
+        Response::success(['loggedIn' => false, 'username' => null, 'isAdmin' => false]);
     }
 
 } catch (Exception $e) {

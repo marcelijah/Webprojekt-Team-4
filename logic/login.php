@@ -19,7 +19,7 @@ try {
     $pdo = DBAccess::getInstance()->getConnection();
 
     // Login per Username
-    $stmt = $pdo->prepare('SELECT id, username, password_hash FROM users WHERE username = ? LIMIT 1');
+    $stmt = $pdo->prepare('SELECT id, username, password_hash, is_admin, is_active FROM users WHERE username = ? LIMIT 1');
     $stmt->execute([$loginName]);
     $user = $stmt->fetch();
 
@@ -27,9 +27,15 @@ try {
         Response::error('Ungültige Zugangsdaten.');
     }
 
+    // B28: Deaktivierte Accounts dürfen sich nicht mehr einloggen
+    if ((int)$user['is_active'] !== 1) {
+        Response::error('Dieser Account wurde deaktiviert. Bitte wende dich an den Support.', 403);
+    }
+
     // Session setzen
     $_SESSION['user_id']  = (int)$user['id'];
     $_SESSION['username'] = $user['username'];
+    $_SESSION['is_admin'] = (int)$user['is_admin'];
 
     // Remember-Me Cookie (B12)
     if ($remember) {
