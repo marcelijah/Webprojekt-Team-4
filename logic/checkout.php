@@ -11,6 +11,16 @@ try {
         Response::error('Bitte zuerst einloggen.', 401);
     }
 
+    $pdo = DBAccess::getInstance()->getConnection();
+
+    // B28: Deaktivierte Accounts dürfen nicht einkaufen
+    $stmt = $pdo->prepare('SELECT is_active FROM users WHERE id = ? LIMIT 1');
+    $stmt->execute([(int)$_SESSION['user_id']]);
+    $aktiv = $stmt->fetchColumn();
+    if ((int)$aktiv !== 1) {
+        Response::error('Dieser Account ist deaktiviert.', 403);
+    }
+
     $input = json_decode(file_get_contents('php://input'), true) ?? [];
     $zahlungsart = trim($input['zahlungsart'] ?? '');
 
@@ -25,7 +35,6 @@ try {
         Response::error('Dein Warenkorb ist leer.');
     }
 
-    $pdo = DBAccess::getInstance()->getConnection();
     $pdo->beginTransaction();
 
     // Gesamtsumme nochmals serverseitig berechnen (Preise frisch aus DB)
