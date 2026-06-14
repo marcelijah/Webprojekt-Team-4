@@ -1,3 +1,4 @@
+//Registrierungsformular – clientseitige Prüfung und Absenden ans Backend
 $(document).ready(function () {
     const $form = $('#register-form');
     const $alert = $('#register-alert');
@@ -6,7 +7,7 @@ $(document).ready(function () {
         e.preventDefault();
         $alert.addClass('d-none');
 
-        // HTML5-Validierung
+        // HTML-Validierung
         if (!this.checkValidity()) {
             this.reportValidity();
             return;
