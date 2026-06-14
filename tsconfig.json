@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "rootDir": "./res/ts",
+    "outDir": "./res/js",
+    "strict": true,
+    "removeComments": false,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": ["res/ts/**/*.ts"]
+}

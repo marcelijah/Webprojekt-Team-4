@@ -1,0 +1,12 @@
+{
+  "name": "webshop-team04",
+  "version": "1.0.0",
+  "description": "Webshop Team 04 - Frontend-Build (TypeScript -> JavaScript)",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}
