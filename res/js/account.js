@@ -46,12 +46,12 @@ function ladeStammdaten() {
 }
 
 function rendereStammdatenFormular(u) {
-    // Username read-only anzeigen (Spec: sensible Infos nicht voll editierbar)
+    // Username read-only anzeigen
     const html =
         '<form id="stammdaten-form" class="card card-body">' +
         '<div class="row g-3">' +
         feld('username', 'Benutzername', u.username) +
-        feld('salutation', 'Anrede', u.salutation) +
+        feld('salutation', 'Anrede', u.salutation, 'text', true) +
         feld('first_name', 'Vorname', u.first_name, 'text', true) +
         feld('last_name', 'Nachname', u.last_name, 'text', true) +
         feld('email', 'E-Mail', u.email, 'email') +
