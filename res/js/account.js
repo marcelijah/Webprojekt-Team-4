@@ -51,7 +51,7 @@ function rendereStammdatenFormular(u) {
         '<form id="stammdaten-form" class="card card-body">' +
         '<div class="row g-3">' +
         feld('username', 'Benutzername', u.username) +
-        feld('salutation', 'Anrede', u.salutation, 'text', true) +
+        feld('salutation', 'Anrede', u.salutation) +
         feld('first_name', 'Vorname', u.first_name, 'text', true) +
         feld('last_name', 'Nachname', u.last_name, 'text', true) +
         feld('email', 'E-Mail', u.email, 'email') +
@@ -134,7 +134,7 @@ function rendereBestellungen(bestellungen) {
 
     let html = '<div class="table-responsive"><table class="table align-middle">';
     html += '<thead><tr>';
-    html += '<th>Bestell-Nr.</th><th>Datum</th><th>Artikel</th><th class="text-end">Gesamt</th>';
+    html += '<th>Datum</th><th>Artikel</th><th class="text-end">Gesamt</th>';
     html += '<th>Zahlungsart</th><th>Status</th><th></th>';
     html += '</tr></thead><tbody>';
 
@@ -142,7 +142,6 @@ function rendereBestellungen(bestellungen) {
         const total = parseFloat(b.total).toFixed(2).replace('.', ',');
         const datum = formatDatum(b.created_at);
         html += '<tr>';
-        html += '<td>#' + b.id + '</td>';
         html += '<td>' + datum + '</td>';
         html += '<td>' + b.anzahl_artikel + '</td>';
         html += '<td class="text-end">' + total + ' €</td>';
