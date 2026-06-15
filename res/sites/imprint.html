@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum – JustInCase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" type="image/svg+xml" href="../img/favicon.svg">
+</head>
+<body class="site-bg">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../../index.html">
+                <i class="bi bi-phone me-1"></i>JustInCase
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">
+                            <i class="bi bi-cart3 me-1"></i>Warenkorb
+                            <span class="badge bg-danger ms-1" id="cart-count">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html" id="auth-link">
+                            <i class="bi bi-person me-1"></i>Anmelden
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="../../index.html">Startseite</a></li>
+                <li class="breadcrumb-item active">Impressum</li>
+            </ol>
+        </nav>
+
+        <h2 class="mb-4 text-center"><i class="bi bi-info-circle me-2"></i>Impressum</h2>
+
+        <div class="card card-body mx-auto" style="max-width: 720px;">
+            
+            <h5 class="fw-bold">Angaben gemäß Offenlegungspflicht</h5>
+            <p class="mb-4">
+                JustInCase – Premium Handyhüllen Webshop<br>
+                Höchstädtplatz 6<br>
+                1200 Wien<br>
+                Österreich
+            </p>
+
+            <h5 class="fw-bold">Vertreten durch</h5>
+            <p class="mb-4">Team 04 – Omar Ftaiti, Teodi Gregorian, Elijah-Marcel Manikan</p>
+
+            <h5 class="fw-bold">Kontakt</h5>
+            <p class="mb-4">
+                E-Mail: <a href="mailto:info@justincase.local">justincase@email.com</a><br>
+                Telefon: +43 123 4567890
+            </p>
+
+            <h5 class="fw-bold">Haftung für Inhalte</h5>
+            <p class="mb-0">
+                Für die Richtigkeit, Vollständigkeit und Aktualität der
+                Inhalte kann keine Gewähr übernommen werden.
+            </p>
+        </div>
+
+    </main>
+
+    <footer class="footer mt-auto py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row gy-3">
+                <div class="col-md-4">
+                    <h6 class="fw-bold mb-2"><i class="bi bi-phone me-1"></i>JustInCase</h6>
+                    <p class="text-secondary small mb-0">Premium Handyhüllen für alle aktuellen iPhone-Modelle.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold mb-2">Schnelllinks</h6>
+                    <ul class="list-unstyled small mb-0">
+                        <li><a href="../../index.html" class="footer-link">Startseite</a></li>
+                        <li><a href="cart.html" class="footer-link">Warenkorb</a></li>
+                        <li><a href="login.html" class="footer-link">Anmelden</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold mb-2">Rechtliches</h6>
+                    <ul class="list-unstyled small mb-0">
+                        <li><a href="imprint.html" class="footer-link">Impressum</a></li>
+                        <li><a href="privacy.html" class="footer-link">Datenschutz</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary mt-3 mb-2">
+            <p class="text-secondary text-center small mb-0">
+                &copy; 2026 JustInCase - WebShop Team 4
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>window.API_BASE_URL = '../../logic/';</script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/cart_badge.js"></script>
+    <script src="../js/site_media.js"></script>
+
+</body>
+</html>
