@@ -34,7 +34,7 @@ function rendereTabs() {
     $('#account-container').html(html);
 }
 
-// B20: Stammdaten 
+// B20: Stammdaten
 function ladeStammdaten() {
     apiCall('account_get.php', {}, function (success, data, message) {
         if (!success) {
@@ -147,7 +147,8 @@ function rendereBestellungen(bestellungen) {
         html += '<td>' + b.anzahl_artikel + '</td>';
         html += '<td class="text-end">' + total + ' €</td>';
         html += '<td>' + escapeHtml(b.payment_method) + '</td>';
-        html += '<td><span class="badge bg-secondary">' + escapeHtml(b.status) + '</span></td>';
+        const badgeClass = b.status === 'done' ? 'bg-success' : 'bg-secondary';
+        html += '<td><span class="badge ' + badgeClass + '">' + escapeHtml(b.status) + '</span></td>';
         html += '<td class="text-end">' +
                 '<a class="btn btn-sm btn-outline-dark" target="_blank" href="../../logic/invoice.php?id=' + b.id + '">' +
                 '<i class="bi bi-receipt me-1"></i>Rechnung</a></td>';

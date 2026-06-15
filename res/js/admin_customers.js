@@ -2,6 +2,7 @@
 // (Kundenliste, Bestelldetails ansehen, Accounts aktivieren/deaktivieren)
 
 let alleKunden = [];
+let aktuelleKundenId = 0;   // gemerkt, um das Bestell-Modal nach Status-Änderung neu zu laden
 
 $(document).ready(function () {
     // Nur Admins dürfen diese Seite nutzen
@@ -78,6 +79,7 @@ function rendereKunden(kunden) {
 
 // B27: Bestelldetails eines Kunden im Modal anzeigen
 function zeigeBestellungen(kundenId) {
+    aktuelleKundenId = kundenId;
     const kunde = alleKunden.find(function (k) { return parseInt(k.id, 10) === kundenId; });
     const name = kunde ? (kunde.first_name + ' ' + kunde.last_name) : '';
     $('#bestell-modal-titel').text('Bestellungen von ' + name);
@@ -86,8 +88,15 @@ function zeigeBestellungen(kundenId) {
     );
 
     const modal = new bootstrap.Modal(document.getElementById('bestell-modal'));
-    modal.show();
+    modal.show();   // Modal nur einmal öffnen
 
+    ladeBestellungen(kundenId);
+}
+
+// Bestelldaten laden und in den Modal-Body rendern (ohne das Modal erneut zu öffnen).
+// Getrennt von zeigeBestellungen(), damit ein Refresh nach dem Umschalten keinen
+// zusätzlichen Bootstrap-Backdrop stapelt.
+function ladeBestellungen(kundenId) {
     apiCall('admin_customer_orders.php', { user_id: kundenId }, function (success, data, message) {
         if (!success) {
             $('#bestell-modal-body').html('<div class="alert alert-danger">' + escapeHtml(message) + '</div>');
@@ -111,8 +120,14 @@ function rendereBestellungen(bestellungen) {
         html += '<strong>Bestellung #' + b.id + '</strong>';
         html += '<span class="text-secondary">' + escapeHtml(formatDatum(b.created_at)) + '</span>';
         html += '</div>';
-        html += '<div class="mb-2"><span class="badge bg-secondary me-1">' + escapeHtml(b.status) + '</span>';
+        const badgeClass = b.status === 'done' ? 'bg-success' : 'bg-secondary';
+        const toggleLabel = b.status === 'done' ? 'Auf offen setzen' : 'Als done markieren';
+        html += '<div class="d-flex justify-content-between align-items-center mb-2">';
+        html += '<div><span class="badge ' + badgeClass + ' me-1">' + escapeHtml(b.status) + '</span>';
         html += 'Zahlungsart: ' + escapeHtml(b.payment_method) + '</div>';
+        html += '<button class="btn btn-sm btn-outline-dark" onclick="schalteBestellung(' + b.id + ')">' +
+                escapeHtml(toggleLabel) + '</button>';
+        html += '</div>';
 
         html += '<table class="table table-sm mb-2"><tbody>';
         (b.positionen || []).forEach(function (pos) {
@@ -140,6 +155,17 @@ function schalteKunde(kundenId) {
             return;
         }
         ladeKunden();   // Liste neu laden, damit Status/Button stimmen
+    });
+}
+
+// Bestellstatus umschalten (pending <-> done) und Modal neu laden
+function schalteBestellung(orderId) {
+    apiCall('admin_order_status.php', { order_id: orderId }, function (success, _data, message) {
+        if (!success) {
+            alert(message);
+            return;
+        }
+        ladeBestellungen(aktuelleKundenId);   // nur Modal-Inhalt neu rendern, Modal bleibt offen (kein neuer Backdrop)
     });
 }
 
