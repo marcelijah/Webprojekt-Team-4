@@ -1,5 +1,5 @@
 <?php
-// B20: Stammdaten ändern – Passwort muss bestätigt werden (laut Spec 6.b)
+// B20: Stammdaten ändern – Passwort muss bestätigt werden
 require_once __DIR__ . '/../config/dbaccess.php';
 require_once __DIR__ . '/response.php';
 

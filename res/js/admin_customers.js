@@ -121,7 +121,7 @@ function rendereBestellungen(bestellungen) {
         html += '<span class="text-secondary">' + escapeHtml(formatDatum(b.created_at)) + '</span>';
         html += '</div>';
         const badgeClass = b.status === 'done' ? 'bg-success' : 'bg-secondary';
-        const toggleLabel = b.status === 'done' ? 'Auf offen setzen' : 'Als done markieren';
+        const toggleLabel = b.status === 'done' ? 'Auf pending setzen' : 'Als done markieren';
         html += '<div class="d-flex justify-content-between align-items-center mb-2">';
         html += '<div><span class="badge ' + badgeClass + ' me-1">' + escapeHtml(b.status) + '</span>';
         html += 'Zahlungsart: ' + escapeHtml(b.payment_method) + '</div>';
