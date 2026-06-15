@@ -34,7 +34,7 @@ function rendereTabs() {
     $('#account-container').html(html);
 }
 
-// ---------- B20: Stammdaten ----------
+// B20: Stammdaten 
 function ladeStammdaten() {
     apiCall('account_get.php', {}, function (success, data, message) {
         if (!success) {
@@ -113,7 +113,7 @@ function speichern() {
     });
 }
 
-// ---------- B21: Bestellhistorie ----------
+// B21: Bestellhistorie
 function ladeBestellungen() {
     apiCall('orders_list.php', {}, function (success, data, message) {
         if (!success) {

@@ -1,17 +1,17 @@
 //Zentrale AJAX-Hilfsdatei für die JSON-Kommunikation mit dem Backend (TypeScript).
 declare const $: any;
 
-//Interface: einheitliche Antwortstruktur des Backends (Folie: Interfaces)
+//Interface: einheitliche Antwortstruktur des Backends
 interface ApiResponse {
     success: boolean;
     data: any;
     message: string;
 }
 
-//Union-/Literal-Type: erlaubte HTTP-Methoden (Folie: Union Types)
+//Union-/Literal-Type: erlaubte HTTP-Methoden
 type HttpMethod = 'GET' | 'POST';
 
-//Funktions-/Callback-Typ (Folie: Function Type & Callbacks)
+//Funktions-/Callback-Typ
 type ApiCallback = (success: boolean, data: any, message: string) => void;
 
 const BASE_URL: string = (window as any).API_BASE_URL || 'logic/';

@@ -31,7 +31,7 @@ export interface ApiResponse {
     message: string;
 }
 
-//Union-/Literal-Type: die einzig erlaubten Zahlungsarten (Folie: Union Types)
+//Union-/Literal-Type: die einzig erlaubten Zahlungsarten
 export type Zahlungsart = 'kreditkarte' | 'paypal' | 'rechnung' | 'vorkasse';
 
 //Kleine Hilfsfunktion (echter Laufzeit-Export).

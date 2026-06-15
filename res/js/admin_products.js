@@ -1,4 +1,3 @@
-
 //Produkte anlegen, bearbeiten, löschen und Bild upload
 
 let alleProdukte = [];   // zwischengespeicherte Produktliste für "Bearbeiten"
