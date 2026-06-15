@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Abgerundete Kachel in der Markenfarbe -->
+  <rect width="32" height="32" rx="7" fill="#0f3460"/>
+  <!-- Smartphone-Silhouette (passt zum bi-phone Logo von JustInCase) -->
+  <rect x="11" y="6" width="10" height="20" rx="2.5" fill="#ffffff"/>
+  <!-- Home-Button -->
+  <circle cx="16" cy="22.8" r="1.1" fill="#0f3460"/>
+</svg>
