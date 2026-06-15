@@ -57,10 +57,10 @@ try {
     if ($id > 0) {
         // B26: Bearbeiten
         $stmt = $pdo->prepare(
-            'UPDATE products SET name = ?, description = ?, price = ?, category = ?, stock = ?, image_path = ?
+            'UPDATE products SET name = ?, price = ?, category = ?, stock = ?, image_path = ?
              WHERE id = ?'
         );
-        $stmt->execute([$name, $beschreibung, $preis, $kategorie, $stock, $bildPfad, $id]);
+        $stmt->execute([$name, $preis, $kategorie, $stock, $bildPfad, $id]);
         Response::success(['id' => $id], 'Produkt wurde aktualisiert.');
     } else {
         // B24: Anlegen

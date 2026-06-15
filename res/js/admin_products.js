@@ -65,10 +65,6 @@ function rendereLayout() {
         '        <input type="file" class="form-control" name="image" accept="image/*">' +
         '        <div class="form-text">JPG, PNG, WEBP oder GIF (max. 5 MB). Beim Bearbeiten optional.</div>' +
         '      </div>' +
-        '      <div class="col-12">' +
-        '        <label class="form-label">Beschreibung</label>' +
-        '        <textarea class="form-control" name="description" rows="2"></textarea>' +
-        '      </div>' +
         '    </div>' +
         '    <div id="form-fehler" class="alert alert-danger d-none mt-3"></div>' +
         '    <div id="form-erfolg" class="alert alert-success d-none mt-3"></div>' +
@@ -184,7 +180,6 @@ function bearbeiteProdukt(id) {
     $f.find('[name="category"]').val(p.category);
     $f.find('[name="price"]').val(p.price);
     $f.find('[name="stock"]').val(p.stock);
-    $f.find('[name="description"]').val(p.description);
     $f.find('[name="image"]').val('');   // vorhandenes Bild bleibt, falls keins neu gewählt wird
 
     $('#form-titel').text('Produkt bearbeiten: ' + p.name);
